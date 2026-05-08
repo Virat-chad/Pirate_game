@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://c48syebmjc7bg"]
+
+[ext_resource type="Texture2D" uid="uid://st33dvh806y" path="res://Assets/Tiles/GroundGrassColor.png" id="1_bxg6i"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_718k3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8eabe"]
+albedo_texture = ExtResource("1_bxg6i")
+uv1_scale = Vector3(3, 2, 1)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_37xat"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q8mni"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kur15"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015057594, 0.0038120747, -0.02619189)
+mesh = SubResource("BoxMesh_718k3")
+surface_material_override/0 = SubResource("StandardMaterial3D_8eabe")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+physics_material_override = SubResource("PhysicsMaterial_37xat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_q8mni")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015057594, 0.0038120747, -0.02619189)
+mesh = SubResource("BoxMesh_kur15")
+surface_material_override/0 = SubResource("StandardMaterial3D_8eabe")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Node3D/MeshInstance3D"]
+physics_material_override = SubResource("PhysicsMaterial_37xat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_q8mni")
