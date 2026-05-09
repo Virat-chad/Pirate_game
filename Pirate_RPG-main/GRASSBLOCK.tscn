@@ -1,41 +1,50 @@
-[gd_scene load_steps=7 format=3 uid="uid://c48syebmjc7bg"]
+[gd_scene load_steps=9 format=3 uid="uid://c48syebmjc7bg"]
 
-[ext_resource type="Texture2D" uid="uid://st33dvh806y" path="res://Assets/Tiles/GroundGrassColor.png" id="1_bxg6i"]
+[ext_resource type="Texture2D" uid="uid://du6b7gf4fia1r" path="res://Assets/Tiles/Grass_01.png" id="1_718k3"]
+[ext_resource type="Texture2D" uid="uid://cuevwevdpd1eu" path="res://Assets/Tiles/WoodPlanks.png" id="2_8eabe"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_718k3"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8eabe"]
-albedo_texture = ExtResource("1_bxg6i")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q8mni"]
+albedo_texture = ExtResource("1_718k3")
 uv1_scale = Vector3(3, 2, 1)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_37xat"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q8mni"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_kur15"]
+[sub_resource type="BoxMesh" id="BoxMesh_8eabe"]
 
-[node name="Node3D" type="Node3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_37xat"]
+albedo_texture = ExtResource("2_8eabe")
+uv1_scale = Vector3(3, 2, 1)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015057594, 0.0038120747, -0.02619189)
+[node name="Mesh" type="Node3D"]
+
+[node name="Grass" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grass"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.015057594, 0.0038120747, -0.02619189)
 mesh = SubResource("BoxMesh_718k3")
-surface_material_override/0 = SubResource("StandardMaterial3D_8eabe")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_q8mni")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Grass/MeshInstance3D"]
 physics_material_override = SubResource("PhysicsMaterial_37xat")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grass/MeshInstance3D/StaticBody3D"]
 shape = SubResource("BoxShape3D_q8mni")
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="Planks" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015057594, 0.0038120747, -0.02619189)
-mesh = SubResource("BoxMesh_kur15")
-surface_material_override/0 = SubResource("StandardMaterial3D_8eabe")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Planks"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.015057594, 0.0038120747, -0.02619189)
+mesh = SubResource("BoxMesh_8eabe")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_37xat")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Node3D/MeshInstance3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Planks/MeshInstance3D"]
 physics_material_override = SubResource("PhysicsMaterial_37xat")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Planks/MeshInstance3D/StaticBody3D"]
 shape = SubResource("BoxShape3D_q8mni")
