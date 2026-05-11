@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://t7wnx2smxt83"]
+
+[ext_resource type="Material" uid="uid://c3ydf1gr6ul34" path="res://Block_scene/plank.tres" id="1_4c4f4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_b5rn8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ncdfa"]
+
+[node name="Node3D" type="Node3D" unique_id=1093718024]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1609755025]
+mesh = SubResource("BoxMesh_b5rn8")
+surface_material_override/0 = ExtResource("1_4c4f4")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1967879355]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=766945136]
+shape = SubResource("BoxShape3D_ncdfa")
