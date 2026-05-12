@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c4e7s1810m8sr"
+path="res://.godot/imported/rocks-a.obj-2a0bf8b942e366d6b9b6f808b37f29ed.mesh"
+
+[deps]
+
+files=["res://.godot/imported/rocks-a.obj-2a0bf8b942e366d6b9b6f808b37f29ed.mesh"]
+
+source_file="res://Assets/Models/Pirate pack/Models/OBJ format/rocks-a.obj"
+dest_files=["res://.godot/imported/rocks-a.obj-2a0bf8b942e366d6b9b6f808b37f29ed.mesh", "res://.godot/imported/rocks-a.obj-2a0bf8b942e366d6b9b6f808b37f29ed.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
