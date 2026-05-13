@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c3ydf1gr6ul34"]
+
+[ext_resource type="Texture2D" uid="uid://cuevwevdpd1eu" path="res://Assets/Tiles/WoodPlanks.png" id="1_5hcr0"]
+
+[resource]
+albedo_texture = ExtResource("1_5hcr0")
+uv1_scale = Vector3(3, 2, 1)
+texture_filter = 0

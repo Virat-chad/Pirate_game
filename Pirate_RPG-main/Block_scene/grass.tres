@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://tl7j4luemq3c"]
+
+[ext_resource type="Texture2D" uid="uid://bx2xqt410iu5r" path="res://Assets/Tiles/Cartoon_green_texture_grass.jpg" id="1_rqkpq"]
+
+[resource]
+albedo_texture = ExtResource("1_rqkpq")
+uv1_scale = Vector3(3, 2, 1)
+texture_filter = 0

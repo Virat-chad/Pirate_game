@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://t7wnx2smxt83"]
+
+[ext_resource type="Texture2D" uid="uid://cuevwevdpd1eu" path="res://Assets/Tiles/WoodPlanks.png" id="1_4c4f4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_b5rn8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_miqq0"]
+albedo_texture = ExtResource("1_4c4f4")
+uv1_scale = Vector3(3, 2, 1)
+texture_filter = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ncdfa"]
+
+[node name="Node3D" type="Node3D" unique_id=1093718024]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1609755025]
+mesh = SubResource("BoxMesh_b5rn8")
+surface_material_override/0 = SubResource("StandardMaterial3D_miqq0")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1967879355]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=766945136]
+shape = SubResource("BoxShape3D_ncdfa")
