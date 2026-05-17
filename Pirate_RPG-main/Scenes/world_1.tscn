@@ -3,22 +3,32 @@
 [ext_resource type="MeshLibrary" uid="uid://clegmk5aw0k3r" path="res://Assets/Mesh_libraries/Pirate_world.tres" id="1_e5alk"]
 [ext_resource type="PackedScene" uid="uid://bv0h2b5vxged5" path="res://Scenes/Water_plane.tscn" id="2_brd3p"]
 [ext_resource type="PackedScene" uid="uid://bqq13ih6483pf" path="res://Scenes/player.tscn" id="3_ax6sa"]
+[ext_resource type="Material" uid="uid://jfwbj3w3kyhs" path="res://Shaders/Sky_shader.tres" id="4_d4kua"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ax6sa"]
-sky_top_color = Color(0.20392157, 0.69803923, 0.70980394, 1)
-sky_horizon_color = Color(0.32110545, 0.5947051, 0.6085992, 1)
-energy_multiplier = 2.08
+[sub_resource type="Sky" id="Sky_12jk7"]
+sky_material = ExtResource("4_d4kua")
 
-[sub_resource type="Sky" id="Sky_d4kua"]
-sky_material = SubResource("ProceduralSkyMaterial_ax6sa")
-
-[sub_resource type="Environment" id="Environment_12jk7"]
+[sub_resource type="Environment" id="Environment_wyo6c"]
 background_mode = 2
-background_color = Color(0.74075294, 0.9982349, 0.9714505, 1)
-sky = SubResource("Sky_d4kua")
-ambient_light_color = Color(0.40320024, 0.58963555, 0.9958963, 1)
-ambient_light_energy = 3.06
-reflected_light_source = 2
+background_color = Color(0.18431373, 0.5019608, 1, 1)
+background_energy_multiplier = 1.04
+sky = SubResource("Sky_12jk7")
+ambient_light_source = 2
+ambient_light_color = Color(0.60784316, 0.8666667, 1, 1)
+ambient_light_energy = 1.77
+tonemap_mode = 2
+tonemap_exposure = 0.67
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.65882355, 0.9411765, 1, 1)
+fog_light_energy = 0.26
+fog_density = 0.005
+fog_aerial_perspective = 0.15
+fog_sky_affect = 0.3
+fog_height_density = 0.85
+fog_depth_end = 1106.8
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0067
 
 [node name="WORLD_1" type="Node3D"]
 
@@ -41,4 +51,4 @@ transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, -59.27203, 9.022828,
 transform = Transform3D(1, 0, 0, 0, -0.3920642, 0.91993785, 0, -0.91993785, -0.3920642, 0, 24.727861, -20.510044)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_12jk7")
+environment = SubResource("Environment_wyo6c")
