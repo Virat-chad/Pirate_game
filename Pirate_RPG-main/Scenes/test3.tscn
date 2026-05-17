@@ -5733,6 +5733,7 @@ shape = SubResource("ConvexPolygonShape3D_e7wnw")
 shape = SubResource("ConvexPolygonShape3D_j2dqa")
 
 [node name="ship-large" type="Node3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 
 [node name="ship-large" type="MeshInstance3D" parent="ship-large"]
 mesh = SubResource("ArrayMesh_urayi")
@@ -5794,6 +5795,7 @@ shape = SubResource("ConvexPolygonShape3D_igvxl")
 shape = SubResource("ConvexPolygonShape3D_ii2ml")
 
 [node name="ship-medium" type="Node3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0.4496956, 0, 0)
 
 [node name="ship-medium" type="MeshInstance3D" parent="ship-medium"]
 mesh = SubResource("ArrayMesh_eelob")
@@ -5855,6 +5857,7 @@ shape = SubResource("ConvexPolygonShape3D_4jidp")
 shape = SubResource("ConvexPolygonShape3D_05tc5")
 
 [node name="ship-pirate-large" type="Node3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 
 [node name="ship-pirate-large" type="MeshInstance3D" parent="ship-pirate-large"]
 mesh = SubResource("ArrayMesh_p31pr")
@@ -5916,6 +5919,7 @@ shape = SubResource("ConvexPolygonShape3D_6of2f")
 shape = SubResource("ConvexPolygonShape3D_uk1bh")
 
 [node name="ship-pirate-medium" type="Node3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 
 [node name="ship-pirate-medium" type="MeshInstance3D" parent="ship-pirate-medium"]
 mesh = SubResource("ArrayMesh_m2xft")
@@ -5977,6 +5981,7 @@ shape = SubResource("ConvexPolygonShape3D_uaivt")
 shape = SubResource("ConvexPolygonShape3D_vpafs")
 
 [node name="ship-pirate-small" type="Node3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 
 [node name="ship-pirate-small" type="MeshInstance3D" parent="ship-pirate-small"]
 mesh = SubResource("ArrayMesh_nqkhq")
