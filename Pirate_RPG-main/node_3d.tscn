@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://b84uimloergo1"]
+
+[ext_resource type="Material" uid="uid://dlv2x3s46wga4" path="res://Shaders/Water_plane.tres" id="1_a0tk4"]
+[ext_resource type="Script" uid="uid://dafnay660k0cw" path="res://Scenes/ship_test_1.gd" id="1_noarx"]
+[ext_resource type="ArrayMesh" uid="uid://peuieq33h0om" path="res://Assets/Models/Pirate pack/Models/OBJ format/ship-small.obj" id="2_a0tk4"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_r3fl7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jka67"]
+
+[node name="Node3D" type="Node3D" unique_id=424086055]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=848663087]
+transform = Transform3D(100, 0, 0, 0, -4.371139e-06, 100, 0, -100, -4.371139e-06, 0, 0, 0)
+mesh = SubResource("QuadMesh_r3fl7")
+surface_material_override/0 = ExtResource("1_a0tk4")
+
+[node name="Ship_test1" type="RigidBody3D" parent="." unique_id=1592297097]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 83.802475, 14.50592, -30.722084)
+script = ExtResource("1_noarx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ship_test1" unique_id=1197748710]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.43681, -14.050827, 24.777088)
+mesh = ExtResource("2_a0tk4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ship_test1" unique_id=391395434]
+shape = SubResource("BoxShape3D_jka67")

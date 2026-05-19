@@ -2,5 +2,13 @@
 
 [ext_resource type="Shader" uid="uid://2ebojqcq5n8j" path="res://Shaders/Sky_shader.gdshader" id="1_oof84"]
 
+[sub_resource type="CameraTexture" id="CameraTexture_oof84"]
+
 [resource]
 shader = ExtResource("1_oof84")
+shader_parameter/top_color = Color(0.1, 0.45, 0.95, 1)
+shader_parameter/horizon_color = Color(0.75, 0.95, 1.2, 1)
+shader_parameter/bottom_color = Color(0.05, 0.08, 0.15, 1)
+shader_parameter/cloud_tex = SubResource("CameraTexture_oof84")
+shader_parameter/cloud_speed = 0.01
+shader_parameter/cloud_scale = 2.0
