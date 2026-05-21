@@ -1,9 +1,10 @@
 extends RigidBody3D
+class_name InteractiveShip
 
 # --- Buoyancy ---
 @export var water_drag         := 0.15
 @export var water_angular_drag := 0.15
-const WATER_HEIGHT             := 24.9
+const WATER_HEIGHT             := 20.5
 
 # --- Driving ---
 const SHIP_SPEED_FORCE  = 2500.0
@@ -27,22 +28,31 @@ func _ready() -> void:
 
 # ─────────────────────────────────────────
 func _physics_process(_delta: float) -> void:
+	# ── Buoyancy ──
 	submerged = false
 	if global_position.y <= WATER_HEIGHT:
 		submerged = true
 		global_position.y = WATER_HEIGHT
-		linear_velocity.y = 0
+		if linear_velocity.y < 0:
+			linear_velocity.y = 0
 		linear_damp  = 5.0
 		angular_damp = 5.0
 	else:
 		linear_damp  = 0.0
 		angular_damp = 0.0
 
+	# ── Ship controls (only when being driven) ──
 	if is_being_driven:
-		var input_dir := Input.get_vector("left", "right", "front", "back")
-		var forward   := -transform.basis.z.normalized()
+		var input_dir      := Input.get_vector("left", "right", "front", "back")
+		var forward        := -transform.basis.z.normalized()
+
+		# Forward / backward thrust
 		apply_central_force(forward * (-input_dir.y * SHIP_SPEED_FORCE))
+
+		# Left / right turn
 		apply_torque(Vector3(0, -input_dir.x * SHIP_TURN_TORQUE, 0))
+
+		# Exit ship with E
 		if Input.is_action_just_pressed("interact"):
 			exit_ship()
 
