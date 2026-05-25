@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bwyhyfdhwoevy"]
+[gd_scene load_steps=40 format=3 uid="uid://bwyhyfdhwoevy"]
 
 [ext_resource type="Script" uid="uid://bqramb14lmkib" path="res://scripts/Sprite.gd" id="1_td42l"]
 [ext_resource type="Texture2D" uid="uid://c2xigjkjk43qj" path="res://Assets/Characters/character-spritesheet.png" id="2_crs1u"]
@@ -295,11 +295,11 @@ animations = [{
 radius = 0.12939453
 height = 0.48580933
 
-[node name="Node3D" type="CharacterBody3D" unique_id=1575350755]
+[node name="Player" type="CharacterBody3D"]
 collision_layer = 2
 script = ExtResource("1_td42l")
 
-[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1649845571]
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.940697e-08, 0)
 billboard = 2
 texture_filter = 0
@@ -307,9 +307,11 @@ sprite_frames = SubResource("SpriteFrames_247nw")
 animation = &"WALK_right"
 autoplay = "IDLE_front"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1648565825]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0572052, 0)
 shape = SubResource("CapsuleShape3D_bsxw6")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=910161750]
+[node name="CameraPivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 0.8799804, 0.47501007, 0, -0.47501007, 0.8799804, -0.007400155, 0.7470591, 1.1847215)

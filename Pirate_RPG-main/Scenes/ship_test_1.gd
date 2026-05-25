@@ -1,102 +1,75 @@
-extends RigidBody3D
+extends CharacterBody3D
 
-# --- Buoyancy ---
-@export var water_drag         := 0.15
-@export var water_angular_drag := 0.15
-const WATER_HEIGHT             := 24.9
+@export var speed := 15.0
+@export var rotation_speed := 1.5
 
-# --- Driving ---
-const SHIP_SPEED_FORCE  = 2500.0
-const SHIP_TURN_TORQUE  = 1500.0
+@onready var ship_camera = $ShipCamera
+@onready var exit_marker = $ExitMarker
+@onready var interact_area = $Area3D
 
-# --- Seat / Exit markers (drag in via Inspector) ---
-@export var seat_position_node: Marker3D
-@export var exit_position_node: Marker3D
+var player_inside = false
+var player_ref = null
+var player_nearby = null
 
-# --- State ---
-var is_being_driven:   bool              = false
-var driver_reference:  CharacterBody3D   = null
-var submerged:         bool              = false
+func _ready():
 
-# ─────────────────────────────────────────
-func _ready() -> void:
-	linear_damp_mode  = RigidBody3D.DAMP_MODE_COMBINE
-	angular_damp_mode = RigidBody3D.DAMP_MODE_COMBINE
-	axis_lock_angular_x = true
-	axis_lock_angular_z = true
+	ship_camera.current = false
 
-# ─────────────────────────────────────────
-func _physics_process(_delta: float) -> void:
-	submerged = false
-	if global_position.y <= WATER_HEIGHT:
-		submerged = true
-		global_position.y = WATER_HEIGHT
-		linear_velocity.y = 0
-		linear_damp  = 5.0
-		angular_damp = 5.0
-	else:
-		linear_damp  = 0.0
-		angular_damp = 0.0
+	interact_area.body_entered.connect(_on_body_entered)
+	interact_area.body_exited.connect(_on_body_exited)
 
-	if is_being_driven:
-		var input_dir := Input.get_vector("left", "right", "front", "back")
-		var forward   := -transform.basis.z.normalized()
-		apply_central_force(forward * (-input_dir.y * SHIP_SPEED_FORCE))
-		apply_torque(Vector3(0, -input_dir.x * SHIP_TURN_TORQUE, 0))
-		if Input.is_action_just_pressed("interact"):
-			exit_ship()
+func _physics_process(delta):
 
-# ─────────────────────────────────────────
-func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
-	if submerged:
-		state.linear_velocity  *= 1.0 - water_drag
-		state.angular_velocity *= 1.0 - water_angular_drag
+	# ENTER SHIP
+	if player_nearby and Input.is_action_just_pressed("interact"):
+		player_nearby.enter_ship(self)
 
-# ─────────────────────────────────────────
-func enter_ship(player: CharacterBody3D) -> void:
-	is_being_driven  = true
-	driver_reference = player
-	sleeping         = false
-
-	player.driving_vehicle = self
-	player.set_physics_process(false)
-	player.set_process_unhandled_input(false)
-	player.velocity = Vector3.ZERO
-
-	# Move player to seat
-	if seat_position_node != null:
-		player.global_position = seat_position_node.global_position
-	else:
-		player.global_position = global_position
-
-	# Hide sprite while driving
-	if player.has_node("AnimatedSprite3D"):
-		player.get_node("AnimatedSprite3D").visible = false
-
-# ─────────────────────────────────────────
-func exit_ship() -> void:
-	is_being_driven = false
-
-	if driver_reference == null:
+	# SHIP CONTROL
+	if !player_inside:
 		return
 
-	var player       = driver_reference
-	driver_reference = null
+	var forward_input = 0.0
 
-	player.driving_vehicle = null
+	if Input.is_action_pressed("front"):
+		forward_input += 1.0
 
-	# Move player to exit point
-	if exit_position_node != null:
-		player.global_position = exit_position_node.global_position
-	else:
-		player.global_position = global_position + Vector3(2, 0, 0)
+	if Input.is_action_pressed("back"):
+		forward_input -= 1.0
 
-	player.velocity = Vector3.ZERO
+	velocity = -transform.basis.z * forward_input * speed
 
-	# Show sprite again
-	if player.has_node("AnimatedSprite3D"):
-		player.get_node("AnimatedSprite3D").visible = true
+	var turn = Input.get_axis("right", "left")
+
+	rotate_y(turn * rotation_speed * delta)
+
+	move_and_slide()
+
+	# EXIT SHIP
+	if Input.is_action_just_pressed("interact"):
+		player_ref.exit_ship()
+
+func enter_ship(player):
+
+	player_inside = true
+	player_ref = player
+
+	ship_camera.current = true
+
+func exit_ship(player):
+
+	player_inside = false
+
+	player.global_transform.origin = exit_marker.global_transform.origin
 
 	player.visible = true
-	player.set_physics_process(true)
-	player.set_process_unhandled_input(true)
+	player.camera.current = true
+
+func _on_body_entered(body):
+
+	if body.name == "Player":
+		player_nearby = body
+
+func _on_body_exited(body):
+
+	if body == player_nearby:
+		player_nearby = null

@@ -2,7 +2,9 @@ extends CharacterBody3D
 
 # --- Nodes ---
 @onready var animated_sprite_3d: AnimatedSprite3D = $AnimatedSprite3D
-@onready var camera: Camera3D = $Camera3D
+@onready var camera_pivot = $CameraPivot
+@onready var camera = $CameraPivot/Camera3D
+
 
 # --- Movement ---
 const WALK_SPEED    = 5.0
@@ -13,42 +15,55 @@ const JUMP_VELOCITY = 4.5
 @export var mouse_sensitivity: float = 0.003
 
 # --- Interaction ---
-const INTERACT_DISTANCE = 12.0
+const INTERACT_DISTANCE = 5.0
 
 # --- State ---
 var current_direction: String = "front"
-var driving_vehicle: RigidBody3D = null
+var controlling_ship = false
+var current_ship = null
 
 # ─────────────────────────────────────────
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 # ─────────────────────────────────────────
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+func _unhandled_input(event):
+	if event is InputEventMouseMotion and !controlling_ship:
 		rotate_y(-event.relative.x * mouse_sensitivity)
-		camera.rotate_x(-event.relative.y * mouse_sensitivity)
-		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-85), deg_to_rad(85))
+		camera_pivot.rotate_x(-event.relative.y * mouse_sensitivity)
+		camera_pivot.rotation.x = clamp(
+			camera_pivot.rotation.x,
+			deg_to_rad(-80),
+			deg_to_rad(80)
+		)
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-# ─────────────────────────────────────────
-func _process(_delta: float) -> void:
-	# Keep player glued to seat while driving
-	if driving_vehicle != null and driving_vehicle.seat_position_node != null:
-		global_position = driving_vehicle.seat_position_node.global_position
 
-# ─────────────────────────────────────────
-func _physics_process(delta: float) -> void:
-	# Driving mode: freeze player, ship script handles movement
-	if driving_vehicle != null:
-		velocity = Vector3.ZERO
-		if driving_vehicle.seat_position_node != null:
-			global_position = driving_vehicle.seat_position_node.global_position
+func _physics_process(delta):
+
+	if controlling_ship:
 		return
+
+	var input_dir = Input.get_vector(
+		"left",
+		"right",
+		"front",
+		"back"
+	)
+
+	var direction = (
+		transform.basis *
+		Vector3(input_dir.x, 0, input_dir.y)
+	).normalized()
+
+	velocity.x = direction.x * WALK_SPEED
+	velocity.z = direction.z * WALK_SPEED
+
+	move_and_slide()
 
 	# Gravity
 	if not is_on_floor():
@@ -57,19 +72,8 @@ func _physics_process(delta: float) -> void:
 	# Jump
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-# Interact (E) - distance based, no RayCast needed
-	if Input.is_action_just_pressed("interact"):
-		print("E pressed, looking for ships...")
-		print("Ships in group: ", get_tree().get_nodes_in_group("ships").size())
-		_try_enter_ship()
-   
 
-
-	# Movement
 	var speed = SPRINT_SPEED if Input.is_action_pressed("sprint") else WALK_SPEED
-	var input_dir := Input.get_vector("left", "right", "front", "back")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
@@ -84,23 +88,28 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_update_animation()
 
-# ─────────────────────────────────────────
-func _try_enter_ship() -> void:
-	var nearest_ship = null
-	var nearest_dist := INTERACT_DISTANCE
-	for body in get_tree().get_nodes_in_group("ships"):
-		var flat_player = Vector2(global_position.x, global_position.z)
-		var flat_ship = Vector2(body.global_position.x, body.global_position.z)
-		var dist = flat_player.distance_to(flat_ship)
-		print("Flat distance to ship: ", dist)
-		if dist < nearest_dist:
-			nearest_dist = dist
-			nearest_ship = body
-	if nearest_ship != null:
-		nearest_ship.enter_ship(self)
-	else:
-		print("Too far!")
+func enter_ship(ship):
 
+	controlling_ship = true
+	current_ship = ship
+
+	visible = false
+
+	camera.current = false
+
+	ship.enter_ship(self)
+func exit_ship():
+
+	if current_ship:
+		current_ship.exit_ship(self)
+
+	controlling_ship = false
+
+	visible = true
+
+	camera.current = true
+
+	current_ship = null
 # ─────────────────────────────────────────
 func _update_animation() -> void:
 	animated_sprite_3d.flip_h = false
