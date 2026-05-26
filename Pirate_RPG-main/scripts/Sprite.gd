@@ -1,29 +1,22 @@
 extends CharacterBody3D
 
-# --- Nodes ---
 @onready var animated_sprite_3d: AnimatedSprite3D = $AnimatedSprite3D
 @onready var camera: Camera3D = $Camera3D
 
-# --- Movement ---
 const WALK_SPEED    = 5.0
 const SPRINT_SPEED  = 9.0
 const JUMP_VELOCITY = 4.5
 
-# --- Mouse Look ---
 @export var mouse_sensitivity: float = 0.003
 
-# --- Interaction ---
 const INTERACT_DISTANCE = 12.0
 
-# --- State ---
 var current_direction: String = "front"
 var driving_vehicle: RigidBody3D = null
 
-# ─────────────────────────────────────────
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-# ─────────────────────────────────────────
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * mouse_sensitivity)
@@ -35,29 +28,26 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-# ─────────────────────────────────────────
 func _process(_delta: float) -> void:
 	# Keep player glued to seat while driving
 	if driving_vehicle != null and driving_vehicle.seat_position_node != null:
 		global_position = driving_vehicle.seat_position_node.global_position
 
-# ─────────────────────────────────────────
 func _physics_process(delta: float) -> void:
-	# Driving mode: freeze player, ship script handles movement
+
 	if driving_vehicle != null:
 		velocity = Vector3.ZERO
 		if driving_vehicle.seat_position_node != null:
 			global_position = driving_vehicle.seat_position_node.global_position
 		return
 
-	# Gravity
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	# Jump
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-# Interact (E) - distance based, no RayCast needed
+
 	if Input.is_action_just_pressed("interact"):
 		print("E pressed, looking for ships...")
 		print("Ships in group: ", get_tree().get_nodes_in_group("ships").size())
@@ -65,7 +55,7 @@ func _physics_process(delta: float) -> void:
    
 
 
-	# Movement
+	
 	var speed = SPRINT_SPEED if Input.is_action_pressed("sprint") else WALK_SPEED
 	var input_dir := Input.get_vector("left", "right", "front", "back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -84,7 +74,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_update_animation()
 
-# ─────────────────────────────────────────
+
 func _try_enter_ship() -> void:
 	var nearest_ship = null
 	var nearest_dist := INTERACT_DISTANCE
@@ -101,7 +91,7 @@ func _try_enter_ship() -> void:
 	else:
 		print("Too far!")
 
-# ─────────────────────────────────────────
+
 func _update_animation() -> void:
 	animated_sprite_3d.flip_h = false
 	if velocity.length() > 0.1:

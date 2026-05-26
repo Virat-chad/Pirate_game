@@ -3,7 +3,7 @@
 [ext_resource type="MeshLibrary" uid="uid://clegmk5aw0k3r" path="res://Assets/Mesh_libraries/Pirate_world.tres" id="1_e5alk"]
 [ext_resource type="PackedScene" uid="uid://bv0h2b5vxged5" path="res://Scenes/Water_plane.tscn" id="2_brd3p"]
 [ext_resource type="Material" uid="uid://jfwbj3w3kyhs" path="res://Shaders/Sky_shader.tres" id="4_d4kua"]
-[ext_resource type="Script" uid="uid://ctju3gbtye73d" path="res://Scenes/ship_test_1.gd" id="5_12jk7"]
+[ext_resource type="Script" uid="uid://ctju3gbtye73d" path="res://scripts/ship_test_1.gd" id="5_12jk7"]
 [ext_resource type="PackedScene" uid="uid://bwyhyfdhwoevy" path="res://test_sprite.tscn" id="6_dksw6"]
 [ext_resource type="ArrayMesh" uid="uid://peuieq33h0om" path="res://Assets/Models/Pirate pack/Models/OBJ format/ship-small.obj" id="6_wyo6c"]
 
